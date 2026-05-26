@@ -9,8 +9,17 @@ set -ouex pipefail
 # List of rpmfusion packages can be found here:
 # https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+# Install Waydroid from Fedora's package repository.
+# This is the same minimal path used by Silverblue/Kinoite community examples.
+dnf5 install -y waydroid
+
+### Configure Waydroid
+
+# The first-boot Waydroid init unit is provided as a static file in build_files/overlay/
+# and installed by the Containerfile copy stage.
+
+# Optional: enable podman.socket if you need Podman at boot.
+# systemctl enable podman.socket
 
 # Use a COPR Example:
 #
