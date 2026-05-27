@@ -37,9 +37,10 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
 
 COPY system_files/ /
 
-RUN chmod +x /usr/libexec/waydroid-auto-init.sh
+RUN chmod +x /usr/libexec/waydroid-auto-init.sh /usr/libexec/waydroid-apk-install.sh
 
 RUN systemctl enable waydroid-auto-init.service && \
+    systemctl enable waydroid-apk-install.service && \
     systemctl enable waydroid-container.service
     
 ### LINTING

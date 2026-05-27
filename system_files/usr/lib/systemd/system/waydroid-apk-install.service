@@ -1,0 +1,13 @@
+[Unit]
+Description=Install Waydroid APKs after the Waydroid container starts
+After=network-online.target waydroid-container.service waydroid-auto-init.service
+Requires=waydroid-container.service
+Wants=waydroid-auto-init.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/waydroid-apk-install.sh
+
+[Install]
+WantedBy=multi-user.target

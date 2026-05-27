@@ -1,7 +1,8 @@
 [Unit]
-Description=Initialize Waydroid and install default APKs
+Description=Initialize Waydroid
 After=network-online.target
 Before=waydroid-container.service
+
 
 [Service]
 Type=oneshot
