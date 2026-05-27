@@ -5,26 +5,11 @@ set -ouex pipefail
 dnf5 install -y waydroid curl jq
 
 mkdir -p /usr/share/waydroid-apks
+### Install apkeep v1.0.0 (hardcoded, correct asset)
+APKEEP_URL="https://github.com/EFForg/apkeep/releases/download/1.0.0/apkeep-x86_64-unknown-linux-gnu"
 
-# Install apkeep (always latest)
-TMPDIR=$(mktemp -d)
-
-# Resolve the latest release tag (e.g. "v0.12.0")
-LATEST_TAG=$(curl -fsSLI -o /dev/null -w '%{url_effective}' \
-  https://github.com/EFForg/apkeep/releases/latest | awk -F'/' '{print $NF}')
-
-# Construct the correct tarball name
-TARBALL="apkeep-${LATEST_TAG}-x86_64-unknown-linux-musl.tar.gz"
-TARBALL_URL="https://github.com/EFForg/apkeep/releases/download/${LATEST_TAG}/${TARBALL}"
-
-echo "Downloading apkeep from: $TARBALL_URL"
-
-curl -fsSL "$TARBALL_URL" -o "$TMPDIR/apkeep.tar.gz"
-tar -xzf "$TMPDIR/apkeep.tar.gz" -C "$TMPDIR"
-
-install -Dm755 "$TMPDIR/apkeep" /usr/local/bin/apkeep
-rm -rf "$TMPDIR"
-
+curl -fsSL "$APKEEP_URL" -o /usr/local/bin/apkeep
+chmod +x /usr/local/bin/apkeep
 
 ### Optional: enable podman.socket
 systemctl enable podman.socket
