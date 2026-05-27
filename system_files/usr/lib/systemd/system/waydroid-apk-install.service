@@ -1,13 +1,18 @@
 [Unit]
-Description=Install Waydroid APKs after the Waydroid container starts
-After=network-online.target waydroid-container.service waydroid-auto-init.service
-Requires=waydroid-container.service
-Wants=waydroid-auto-init.service
+Description=Install APKs into Waydroid after Android session is ready
+After=waydroid-session.target NetworkManager-wait-online.service
+Requires=waydroid-session.target NetworkManager-wait-online.service
 
 [Service]
 Type=oneshot
-RemainAfterExit=yes
 ExecStart=/usr/libexec/waydroid-apk-install.sh
+RemainAfterExit=yes
+
+# Ensure script can access Waydroid runtime
+PrivateTmp=no
+PrivateDevices=no
+ProtectSystem=off
+ProtectHome=read-only
 
 [Install]
 WantedBy=multi-user.target
