@@ -1,0 +1,13 @@
+[Unit]
+Description=Initialize Waydroid with OTA URLs on first boot
+After=network-online.target
+Wants=network-online.target
+Before=waydroid-container.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/waydroid-auto-init.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
