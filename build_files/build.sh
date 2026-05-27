@@ -4,6 +4,8 @@ set -ouex pipefail
 ### Install required packages
 dnf5 install -y waydroid curl jq
 
+mkdir -p /usr/share/waydroid-apks
+
 ### Install apkeep (always latest)
 TMPDIR=$(mktemp -d)
 

@@ -12,6 +12,8 @@ PrivateTmp=no
 PrivateDevices=no
 ProtectSystem=off
 ProtectHome=read-only
+BindPaths=/run/waydroid
+BindPaths=/dev/binderfs
 
 [Install]
 WantedBy=multi-user.target
