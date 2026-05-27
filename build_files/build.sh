@@ -1,33 +1,25 @@
 #!/bin/bash
-
 set -ouex pipefail
 
-### Install packages
+### Install required packages
+dnf5 install -y waydroid curl jq
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+### Install apkeep (always latest)
+TMPDIR=$(mktemp -d)
 
-# Install Waydroid from Fedora's package repository.
-# This is the same minimal path used by Silverblue/Kinoite community examples.
-dnf5 install -y waydroid
+# Fetch latest release tarball URL automatically
+LATEST_URL=$(curl -fsSLI -o /dev/null -w '%{url_effective}' \
+  https://github.com/EFForg/apkeep/releases/latest)
 
-### Configure Waydroid
+# Convert ".../tag/v0.12.0" → ".../download/v0.12.0/apkeep-v0.12.0-x86_64-unknown-linux-musl.tar.gz"
+VERSION=$(basename "$LATEST_URL")
+TARBALL_URL="https://github.com/EFForg/apkeep/releases/download/${VERSION}/apkeep-${VERSION}-x86_64-unknown-linux-musl.tar.gz"
 
-# The first-boot Waydroid init unit is provided as a static file in build_files/overlay/
-# and installed by the Containerfile copy stage.
+curl -fsSL "$TARBALL_URL" -o "$TMPDIR/apkeep.tar.gz"
+tar -xzf "$TMPDIR/apkeep.tar.gz" -C "$TMPDIR"
 
-# Optional: enable podman.socket if you need Podman at boot.
-# systemctl enable podman.socket
+install -Dm755 "$TMPDIR/apkeep" /usr/local/bin/apkeep
+rm -rf "$TMPDIR"
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
-
-#### Example for enabling a System Unit File
-
+### Optional: enable podman.socket
 systemctl enable podman.socket

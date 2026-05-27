@@ -8,7 +8,6 @@ Type=oneshot
 ExecStart=/usr/libexec/waydroid-apk-install.sh
 RemainAfterExit=yes
 
-# Ensure script can access Waydroid runtime
 PrivateTmp=no
 PrivateDevices=no
 ProtectSystem=off
