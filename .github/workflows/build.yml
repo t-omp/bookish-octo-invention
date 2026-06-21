@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+      - emacs
     paths-ignore:
       - '**/README.md'
   workflow_dispatch:

@@ -12,6 +12,10 @@ set -ouex pipefail
 # this installs a package from fedora repos
 dnf5 install -y tmux 
 
+# Install low-memory and eMMC-friendly utilities
+# zram-generator-defaults creates a compressed swap device on boot
+dnf5 install -y zram-generator-defaults util-linux || true
+
 # Use a COPR Example:
 #
 # dnf5 -y copr enable ublue-os/staging
@@ -22,3 +26,14 @@ dnf5 install -y tmux
 #### Example for enabling a System Unit File
 
 systemctl enable podman.socket
+
+# Disk and memory tuning files are provided under `system_files/etc/` and
+# will be installed into the image; keep them version controlled there.
+
+# Enable periodic fstrim to maintain eMMC performance
+systemctl enable fstrim.timer || true
+
+# Enable memory helpers for low-RAM systems
+systemctl enable systemd-oomd || true
+# Enable zram setup unit for the first zram device (if generated)
+systemctl enable systemd-zram-setup@zram0.service || true
