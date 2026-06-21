@@ -4,7 +4,7 @@ COPY build_files /
 COPY system_files /
 
 # Base Image
-FROM ghcr.io/wayblueorg/sway:stable
+FROM ghcr.io/wayblueorg/sway:latest
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
